@@ -1,0 +1,58 @@
+\begin{sidewaystable}
+\begin{centering}
+\textbf{The Exponential Families}
+\par\end{centering}
+\centering{}%
+\begin{tabular}{|c|>{\centering}p{3cm}|c|c|c|}
+\hline 
+$\mathcal{F}_{1}$ & Undirected graphs & $n2^{\binom{n}{2}}=\sum_{k}\binom{n}{k}kd_{k}2^{\binom{n-k}{2}},n\geq1$ & $\mathcal{H}\left(x\right)=\sum_{n\geq0}\frac{2^{\binom{n}{2}}}{n!}x^{n}$
+\footnote{Convergent only for $x=0$.} & \resizebox{270pt}{!}{\Deck[0.7]{1}{\{$\cdots$\}}{1}{ \Connected[0.7]{1} }\Deck[0.7]{2}{\{$\cdots$\}}{1}{ \Connected[0.7]{2} }\Deck[0.7]{3}{\{$\cdots$\}}{4}{ \Connected[0.7]{3} }$\cdots$\Deck[0.7]{n}{\{$\cdots$\}}{$d_n$}{ \Connected[0.7]{n} }$\cdots$}\tabularnewline
+\hline 
+$\mathcal{F}_{2}$ & Cyclic permutations\footnote{Cyclic permutation have no fixed points. Card: cyclic permutation
+(no account for fixed points); Hand: permutation (account for fixed
+points).} & $\begin{array}{c}
+d_{n}=\left(n-1\right)!\\
+\mathcal{D}\left(x\right)=\log\frac{1}{1-x}
+\end{array}$ & $\begin{array}{c}
+h\left(n,k\right)=\left[\begin{array}{c}
+n\\
+k
+\end{array}\right]\\
+\mathcal{H}\left(x,y\right)=\frac{1}{\left(1-x\right)^{y}}
+\end{array}$ & \resizebox{270pt}{!}{\Deck[0.7]{1}{\{$\cdots$\}}{1}{ \Cycle[0.7]{}{1} }\Deck[0.7]{2}{\{$\cdots$\}}{1}{ \Cycle[0.7]{}{2} }\Deck[0.7]{3}{\{$\cdots$\}}{2}{ \Cycle[0.7]{}{3} }$\cdots$\Deck[0.7]{n}{\{$\cdots$\}}{$d_n$}{\Cycle[0.7]{}{n} }$\cdots$}\tabularnewline
+\hline 
+$\mathcal{F}_{3}$ & Set partitions\footnote{N. of ways to partition $n$ objects in $k$ classes = n. of hands
+of weight $n$ and $k$ cards. Order does not matter.} & $\begin{array}{c}
+d_{n}=1,n\geq1\\
+\mathcal{D}\left(x\right)=e^{x}-1
+\end{array}$ & $\begin{array}{c}
+h\left(n,k\right)=\left\{ \begin{array}{c}
+n\\
+k
+\end{array}\right\} \\
+\mathcal{H}\left(x,y\right)=e^{y\left(e^{x}-1\right)}
+\end{array}$ & \resizebox{270pt}{!}{\Deck[0.7]{1}{\{$\cdots$\}}{1}{ \Rabbit[0.7] }\Deck[0.7]{2}{\{$\cdots$\}}{1}{ \Rabbit[0.7] }\Deck[0.7]{3}{\{$\cdots$\}}{1}{ \Rabbit[0.7] }$\cdots$\Deck[0.7]{n}{\{$\cdots$\}}{1}{ \Rabbit[0.7] }$\cdots$}\tabularnewline
+\hline 
+$\mathcal{F}_{4}$ & Involutions, etc.\footnote{Similar to $\mathcal{F}_{2}$, but only certain non-empty decks.}
+$\sigma^{m}=1$ & $\begin{array}{c}
+d_{n}=\begin{cases}
+\left(n-1\right)! & n\backslash m\\
+0 & \textrm{otherwise}
+\end{cases}\\
+\mathcal{D}\left(x\right)=\sum_{d\backslash m}\frac{x^{d}}{d}
+\end{array}$ & $\mathcal{H}\left(x,y\right)=e^{y\sum_{d\backslash m}\frac{x^{d}}{d}}$ & \resizebox{270pt}{!}{\Deck[0.7]{1}{\{$\cdots$\}}{1}{ \Cycle[0.7]{}{1} }\Deck[0.7]{2}{\{$\cdots$\}}{1}{ \Cycle[0.7]{}{2} }\Deck[0.7]{3}{\{$\cdots$\}}{0}{ }$\cdots$\Deck[0.7]{n}{\{$\cdots$\}}{0}{ }$\cdots$}\footnote{Example of involution exponential family ($m=2$).}\tabularnewline
+\hline 
+$\mathcal{F}_{5}$ & Undirected cycles\footnote{2-regular graphs: every vertex has two lines.} & $\begin{array}{c}
+d_{n}=\begin{cases}
+\frac{\left(n-1\right)!}{2} & n\geq3\\
+0 & n=1,2
+\end{cases}\\
+\mathcal{D}\left(x\right)=\frac{1}{2}\left[\log\frac{1}{1-x}-x-\frac{x^{2}}{2}\right]
+\end{array}$ & $\mathcal{H}\left(x,y\right)=\frac{e^{-\frac{x}{2}-\frac{x^{2}}{4}}}{\sqrt{1-x}}$ & \resizebox{270pt}{!}{\Deck[0.7]{1}{\{$\cdots$\}}{0}{ }\Deck[0.7]{2}{\{$\cdots$\}}{0}{ }\Deck[0.7]{3}{\{$\cdots$\}}{2}{ \Cycle[0.7]{undirected}{3} }$\cdots$\Deck[0.7]{n}{\{$\cdots$\}}{$d_n$}{\Cycle[0.7]{undirected}{n} }$\cdots$}\tabularnewline
+\hline 
+$\mathcal{F}_{6}$ & 2-colored bipartite graphs & $\mathcal{D}\left(x\right)=\log\mathcal{H}\left(x\right)$ & $h_{n}=\sum_{k}\binom{n}{k}2^{k\left(n-k\right)}$ & \tabularnewline
+\hline 
+$\mathcal{F}_{7}$ & Rooted trees\footnote{Polya's theorem: rooted forests $\sim$ $n+1$ rooted trees. } & \multicolumn{2}{c|}{$t_{n+1}=\left(n+1\right)f_{n},\qquad\mathcal{H}\left(x\right)=e^{\mathcal{D}\left(x\right)},\qquad\mathcal{D}\left(x\right)=xe^{\mathcal{D}\left(x\right)}$} & \tabularnewline
+\hline 
+\end{tabular}
+\end{sidewaystable}
