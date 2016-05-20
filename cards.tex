@@ -1,0 +1,208 @@
+\usepackage{tikz}
+\usepackage{ifthen}
+
+\pgfmathsetmacro{\cardwidth}{3}
+\pgfmathsetmacro{\bottomlineheight}{\cardwidth*0.25}
+\pgfmathsetmacro{\cardheight}{\cardwidth + \bottomlineheight}
+\pgfmathsetmacro{\belowcarddist}{-0.2}
+\pgfmathsetmacro{\radiusmargin}{0.28}
+\pgfmathsetmacro{\anglemargin}{17}
+
+%Card
+% Usage: \Card{weight}{label}{ Picture }
+\newcommand{\Card}[4][1]{
+	\begin{tikzpicture}[scale=#1, baseline=(current bounding box.center)]
+		\draw[thick, rounded corners=\cardwidth*2*#1] (0,0) rectangle (\cardwidth,\cardheight);
+		% Picture
+		\node at (\cardwidth*0.5, \cardheight*0.5 + \bottomlineheight*0.5) {#4} ;
+		% Bottom line
+		\draw [thick] (0,\bottomlineheight)--(\cardwidth,\bottomlineheight);
+		% Card label
+		\node at (\cardwidth*0.5,\bottomlineheight*0.5) {#3};
+		% Card weight
+		\node at (\cardwidth*0.9,\cardheight*0.9) {$#2$};
+	\end{tikzpicture}
+}
+% Examples:
+% \Card[0.6]{n}{S}{ Picture }
+% \Card{n}{S}{ Picture }
+% \Card[1.4]{n}{S}{ Picture }
+
+
+%Deck
+% Usage: \Deck{weight}{label}{n of cards in the deck}{ Picture }
+\newcommand{\Deck}[5][1]{
+	\begin{tikzpicture}[scale=#1, baseline=(current bounding box.center)]
+		\ifthenelse{\equal{#4}{0}}
+			{
+			\draw[thick, dashed, rounded corners=\cardwidth*2*#1](0,0) rectangle (\cardwidth,\cardheight);}
+			{
+			\draw[thick, rounded corners=\cardwidth*2*#1](0,0) rectangle (\cardwidth,\cardheight);
+			% Picture
+			\node at (\cardwidth*0.5, \cardheight*0.5 + \bottomlineheight*0.5) {#5} ;
+			% Bottom line
+			\draw[thick](0,\bottomlineheight)--(\cardwidth,\bottomlineheight);
+			% Card label
+			\node at (\cardwidth*0.5,\bottomlineheight*0.5) {#3};
+			% Card weight
+			\node at (\cardwidth*0.9,\cardheight*0.9) {#2};
+			% Cards below
+			\ifthenelse{\equal{#4}{1}}{}{
+				\ifthenelse{\equal{#4}{2} \OR \equal{#4}{3} \OR \equal{#4}{4}\OR \equal{#4}{5}}
+					{
+					\foreach \i in {2,...,#4}
+						\draw[thick,rounded corners=\cardwidth*2*#1]
+							(\belowcarddist*\i-\belowcarddist*2,0)--(\belowcarddist*\i-\belowcarddist,0)--(\belowcarddist*\i-\belowcarddist,\cardheight)--(\belowcarddist*\i-\belowcarddist*2,\cardheight);}
+					{
+					\foreach \i in {2,...,5}
+						\draw[thick,rounded corners=\cardwidth*2*#1]
+							(\belowcarddist*\i-\belowcarddist*2,0)--(\belowcarddist*\i-\belowcarddist,0)--(\belowcarddist*\i-\belowcarddist,\cardheight)--(\belowcarddist*\i-\belowcarddist*2,\cardheight);
+					% n. of cards in the deck
+					\draw[fill=white,draw=none]
+						(\belowcarddist*2,\cardheight*0.5) circle (-\belowcarddist*1.8);
+					\node at (\belowcarddist*2,\cardheight*0.5) {#4};}
+				}
+			}
+	\end{tikzpicture}
+}
+% Examples:
+% \Deck{n}{S}{2}{Picture}
+% \Deck{n}{S}{5}{Picture}
+% \Deck{n}{S}{a}{Picture}
+
+
+% Pitures
+
+% Connected
+\newcommand{\Connected}[2][1]{
+	\begin{tikzpicture}[scale=#1, baseline=(current bounding box.center)]
+	\def \n {8}
+	\def \nminangle {360/\n}
+	\def \radius {\cardwidth*0.32}
+	\def \minangle {360/#2}
+		\ifthenelse{\equal{#2}{1} \OR\equal{#2}{2} \OR \equal{#2}{3} \OR \equal{#2}{4} \OR \equal{#2}{5} \OR \equal{#2}{6} \OR \equal{#2}{7} \OR \equal{#2}{8}}
+			{
+			\foreach \s in {1,...,#2}
+				{
+				\node at ({\minangle * (\s - 1)}:\radius) {$\s$};
+				% More than 2 vertices
+				\ifthenelse{\equal{#2}{3} \OR \equal{#2}{4} \OR \equal{#2}{5} \OR \equal{#2}{6} \OR \equal{#2}{7} \OR \equal{#2}{8}}
+					{
+					\draw[thick] ({\minangle * (\s - 1)}:\radius - \radiusmargin) -- ({\minangle * (\s - 1)}:\radius*0.5);
+					\draw[densely dotted, thick] ({\minangle * (\s - 1)}:\radius*0.5) -- ({\minangle * (\s - 1)}:\radius*0.2);
+					}{}
+				}
+			% 2 Vertices
+			\ifthenelse{\equal{#2}{2}}
+				{
+				\draw[thick] (1:\radius - \radiusmargin) -- (180:\radius - \radiusmargin);
+				}{}
+			}
+			{
+			% First 6 vertices
+			\foreach \s in {1,...,6}
+				{
+				\node at ({\nminangle * (\s - 1)}:\radius) {$\s$};
+				\draw[thick] ({\nminangle * (\s - 1)}:\radius - \radiusmargin) -- ({\nminangle * (\s - 1)}:\radius*0.5);
+				\draw[densely dotted, thick] ({\nminangle * (\s - 1)}:\radius*0.5) -- ({\nminangle * (\s - 1)}:\radius*0.2);
+				}
+			% Last vertex
+			\node at ({\nminangle * (\n - 1)}:\radius) {$#2$};
+			\draw[thick] ({\nminangle * (\n - 1)}:\radius - \radiusmargin) -- ({\nminangle * (\n - 1)}:\radius*0.5);
+			\draw[densely dotted, thick] ({\nminangle * (\n - 1)}:\radius*0.5) -- ({\nminangle * (\n - 1)}:\radius*0.2);
+			% Dotted arc from #2 - 3 to #2
+ 			\draw[dashed, thick] ({\nminangle * 5+\anglemargin}:\radius)
+				arc ({\nminangle * 5+\anglemargin}:{\nminangle * (\n - 1)-\anglemargin}:\radius);
+			}
+	\end{tikzpicture} }
+% Examples:
+% \Connected[0.7]{3}
+% \Connected[0.7]{n}	
+	
+% Cycle
+\newcommand{\Cycle}[3][1]{
+	\begin{tikzpicture}[scale=#1, baseline=(current bounding box.center)]
+	\def \n {8}
+	\def \nminangle {360/\n}
+	\def \radius {\cardwidth*0.32}
+	\def \minangle {360/#3}
+	\ifthenelse{\equal{#2}{undirected}}
+		{
+		\def \arcstyle {}
+		}
+		{
+		\def \arcstyle {->}
+		}
+		\ifthenelse{\equal{#3}{1} \OR\equal{#3}{2} \OR \equal{#3}{3} \OR \equal{#3}{4} \OR \equal{#3}{5} \OR \equal{#3}{6} \OR \equal{#3}{7} \OR \equal{#3}{8}}
+			{
+			\foreach \s in {1,...,#3}
+				{
+				\node at ({\minangle * (\s - 1)}:\radius) {$\s$};
+				% More than 2 vertices
+				\ifthenelse{\equal{#3}{3} \OR \equal{#3}{4} \OR \equal{#3}{5} \OR \equal{#3}{6} \OR \equal{#3}{7} \OR \equal{#3}{8}}
+					{
+					\draw[\arcstyle, thick] ({\minangle * (\s - 1)+\anglemargin}:\radius) 
+   						arc ({\minangle * (\s - 1)+\anglemargin}:{\minangle * (\s)-\anglemargin}:\radius);
+					}{}
+				}
+			% 2 Vertices
+			\ifthenelse{\equal{#3}{2}}
+				{
+				\draw[thick] (1:\radius - \radiusmargin) -- (180:\radius - \radiusmargin);
+				}{}
+			}
+			{
+			% First 6 vertices
+			\foreach \s in {1,...,6}
+				{
+				\node at ({\nminangle * (\s - 1)}:\radius) {$\s$};
+				\draw[\arcstyle, thick] ({\nminangle * (\s - 2)+\anglemargin}:\radius) 
+   						arc ({\nminangle * (\s - 2)+\anglemargin}:{\nminangle * (\s - 1)-\anglemargin}:\radius);
+				}
+			% Last vertex
+			\node at ({\nminangle * (\n - 1)}:\radius) {$#3$};
+			% Dotted arc from #3 - 3 to #3
+ 			\draw[\arcstyle, dashed, thick] ({\nminangle * 5+\anglemargin}:\radius)
+				arc ({\nminangle * 5+\anglemargin}:{\nminangle * (\n - 1)-\anglemargin}:\radius);
+			}
+	\end{tikzpicture} }
+% Examples:	
+%\Cycle[0.7]{undirected}{3}
+%\Cycle[0.7]{}{n}
+
+% Rabbit
+\newcommand{\Rabbit}[1][1]{
+	\begin{tikzpicture}[y=0.80pt, x=0.8pt, scale=-0.55*#1, inner sep=0pt, outer sep=0pt, baseline=(current bounding box.center)]
+	    \path[draw=black,line join=miter,line cap=butt,line width=0.800pt]
+	      (214.6574,193.2274) .. controls (214.6574,193.2274) and (214.8258,181.6107) ..
+	      (223.2437,181.6107) .. controls (231.6617,181.6107) and (231.8300,193.2274) ..
+	      (231.8300,193.2274);
+	  \begin{scope}[cm={{-1.0,0.0,0.0,1.0,(412.43872,0.0)}}]
+	    \path[draw=black,line join=miter,line cap=butt,line width=0.800pt]
+	      (168.4638,187.2755) .. controls (172.6883,174.7074) and (172.8379,170.1894) ..
+	      (180.2739,163.9082) .. controls (181.5955,162.7919) and (162.9289,136.5320) ..
+	      (157.0419,113.8858) .. controls (152.5792,96.7190) and (154.8457,88.1948) ..
+	      (155.8726,87.7078) .. controls (156.7090,87.3111) and (170.1755,91.7235) ..
+	      (175.8337,106.7556) .. controls (184.2246,129.0473) and (191.2961,158.4366) ..
+	      (192.4596,158.1344) .. controls (199.8375,156.2174) and (206.2194,156.2084) ..
+	      (206.2194,156.2084) .. controls (206.2194,156.2084) and (212.6012,156.2174) ..
+	      (219.9792,158.1344) .. controls (221.1426,158.4366) and (228.2142,129.0473) ..
+	      (236.6050,106.7556) .. controls (242.2633,91.7235) and (255.7297,87.3111) ..
+	      (256.5661,87.7078) .. controls (257.5930,88.1948) and (259.8595,96.7190) ..
+	      (255.3969,113.8858) .. controls (249.5098,136.5320) and (230.8432,162.7918) ..
+	      (232.1649,163.9082) .. controls (239.6009,170.1894) and (239.7505,174.7074) ..
+	      (243.9750,187.2755) .. controls (265.9058,222.0539) and (206.2194,221.5612) ..
+	      (206.2194,221.5612) .. controls (206.2194,221.5612) and (146.5329,222.0539) ..
+	      (168.4638,187.2755) -- cycle;
+	    \path[draw=black,line join=miter,line cap=butt,line width=0.800pt]
+	      (214.6574,193.2274) .. controls (214.6574,193.2274) and (214.8258,181.6107) ..
+	      (223.2437,181.6107) .. controls (231.6617,181.6107) and (231.8300,193.2274) ..
+	      (231.8300,193.2274);
+	    \path[draw=black,line join=miter,line cap=butt,line width=0.800pt]
+	      (238.3960,202.8239) .. controls (238.3960,202.8239) and (235.1569,209.8950) ..
+	      (206.2194,209.8950) .. controls (177.2818,209.8950) and (174.0427,202.8239) ..
+	      (174.0427,202.8239);
+	  \end{scope}
+	\end{tikzpicture}
+}
+
